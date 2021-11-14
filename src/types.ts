@@ -45,3 +45,5 @@ export interface HTTP_ERROR {
 export type ValidationRule = (model: string, field: string) => Function;
 
 export type Middleware = (request: Request, response: Response, next: NextFunction) => any;
+
+export type RouteAction = (request: Request, response: Response) => any;
