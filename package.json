@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "setup": "node -e \"require('fs').copyFile('.env.example', '.env', require('fs').constants.COPYFILE_EXCL, (err) => null)\""
   },
   "keywords": [],
   "author": "",
