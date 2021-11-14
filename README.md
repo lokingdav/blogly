@@ -11,3 +11,7 @@ Run ```npm run dev``` to start local server with nodemon.
 Run ```npm run build``` to build app into ```dist``` folder.
 
 That's it.
+
+- Login: ```POST``` http://localhost:3000/login ```username```, and ```password```.
+- Register: ```POST``` http://localhost:3000/login ```firstname```, ```lastname```, ```username```, ```email```, ```password```.
+- Send Reset Password Email: ```POST``` http://localhost:3000/passwords/reset ```email``` or ```username```.
