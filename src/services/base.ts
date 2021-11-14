@@ -1,5 +1,6 @@
-import {Document, Error} from 'mongoose';
+import {Document, Error, Model} from 'mongoose';
 import { buildModelValidationErrors } from '../helpers';
+import { AuthUser } from '../types';
 
 export default abstract class BaseService {
   /**
@@ -10,12 +11,20 @@ export default abstract class BaseService {
   model: any;
 
   /**
+   * @type {Any}
+   *
+   * Holds model to be used
+   */
+  authUser: any;
+
+  /**
    * Service constructor
    *
    * @param {String} model model to be used
    */
-  constructor(model?: any) {
+  constructor(model: Model<any>, authUser?: AuthUser) {
     this.model = model;
+    this.authUser = authUser;
   }
 
   /**
@@ -39,5 +48,19 @@ export default abstract class BaseService {
         return resolve(document);
       });
     })
+  }
+
+  all(params: object = {}, populates: string[] = []): Promise<Document[]> {
+    return new Promise((resolve, reject) => {
+      const query = this.model.find(params);
+
+      for (let field of populates) {
+        const [path, select] = field.split(':');
+
+        query.populate({path, select: select.split(',').join(' ')});
+      }
+
+      return query.exec((error: any, documents: Document[]) => resolve(documents));
+    });
   }
 }

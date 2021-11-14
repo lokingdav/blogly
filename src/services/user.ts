@@ -1,7 +1,8 @@
 import BaseService from './base';
 import { Document } from 'mongoose';
 import UserModel from '../models/user';
-import { UserRegistrationData } from '../types';
+import { AuthUser, UserRegistrationData } from '../types';
+import { buildValidationError } from '../helpers';
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -10,10 +11,10 @@ class UserService extends BaseService {
     /**
      * Construct user service and base service
      *
-     * @param {String} model
+     * @param {AuthUser} authUser
      */
-    constructor() {
-        super(UserModel);
+    constructor(authUser?: AuthUser) {
+        super(UserModel, authUser);
     }
 
     /**
@@ -23,9 +24,21 @@ class UserService extends BaseService {
      * @returns {Promise<Document>}
      */
     async register(data: UserRegistrationData): Promise<Document> {
+        if (!data.password) {
+            return Promise.reject(buildValidationError({password: ['Password is required']}));
+        }
+
         data.password = bcrypt.hashSync(data.password, 8);
 
-        return this.store(data);
+        try {
+            const user = await this.store(data);
+
+            return Promise.resolve(user);
+        } catch (error) {
+            console.log(error);
+
+            return Promise.reject(error);
+        }
     }
 
     /**
@@ -48,9 +61,10 @@ class UserService extends BaseService {
 
             return Promise.resolve(data);
         } catch (error) {
+            console.log(error);
             return Promise.reject({message: `Something unexpected happened. Try again later`});
         }
     }
 }
 
-export default new UserService;
+export default (authUser?: AuthUser) => new UserService(authUser);
