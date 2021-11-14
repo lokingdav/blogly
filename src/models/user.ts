@@ -1,6 +1,6 @@
-import mongoose, {Schema, model, Document} from 'mongoose';
-import { MODEL_NAMES, USER_INTERFACE } from '../types';
+import mongoose, {Schema} from 'mongoose';
 import { unique } from '../validators/rules';
+import { MODEL_NAMES, USER_INTERFACE } from '../types';
 
 const schema = new Schema<USER_INTERFACE>({
     username: {
@@ -41,4 +41,4 @@ const schema = new Schema<USER_INTERFACE>({
 
 schema.index({username: 1, email: 1}, {unique: true});
 
-export default model<USER_INTERFACE>(MODEL_NAMES.User, schema);
+export default mongoose.model<USER_INTERFACE>(MODEL_NAMES.User, schema);

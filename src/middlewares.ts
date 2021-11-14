@@ -17,7 +17,7 @@ export const auth: Middleware = (request: Request, response: Response, next: Nex
         jwt.verify(token, process.env.TOKEN_KEY, (err: any, user: any) => {
             if (err) return response.status(HTTP_CODES.UNAUTHENTICATED).json(errorResponse);
 
-            request.auth = user;
+            request.authUser = user;
 
             next();
         });

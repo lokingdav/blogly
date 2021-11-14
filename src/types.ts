@@ -1,6 +1,13 @@
 import {Request, Response, NextFunction} from 'express';
+import { SchemaType } from 'mongoose';
 
 export type StringOrNumber = string | number;
+
+export interface AuthUser {
+    _id: string,
+    username: string,
+    email: string
+}
 
 export interface UserRegistrationData {
     username: string,
@@ -13,7 +20,8 @@ export interface UserRegistrationData {
 export enum MODEL_NAMES{
     User = 'User',
     Post = 'Post',
-    Comment = 'Comment'
+    Comment = 'Comment',
+    Like = 'Like'
 }
 
 export interface USER_INTERFACE {
@@ -22,6 +30,23 @@ export interface USER_INTERFACE {
     lastname: string;
     email: string;
     password: string;
+};
+
+export interface POST_INTERFACE {
+    title: string;
+    content: string;
+    createdBy: Object;
+};
+
+export interface LIKE_INTERFACE {
+    post: Object;
+    user: Object;
+};
+
+export interface COMMENT_INTERFACE {
+    post: Object;
+    user: Object;
+    content: string;
 };
 
 export enum HTTP_CODES {
