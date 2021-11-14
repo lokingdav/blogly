@@ -22,3 +22,18 @@ export const buildModelValidationErrors = (error: Error.ValidationError, data: a
         data
     };
 }
+
+/**
+ * Builds validation error
+ *
+ * @param {Object} errors errors to be sent
+ * @returns {Object}
+ */
+export const buildValidationError = (errors: object) => {
+    return {
+        status: HTTP_CODES.UNPROCESSABLE_ENTITY,
+        message: 'The given data was invalid',
+        errors: errors,
+        data: null
+    };
+}
