@@ -1,6 +1,6 @@
 import mongoose, {Schema, model, Document} from 'mongoose';
 import { MODEL_NAMES, USER_INTERFACE } from '../types';
-import { unique } from '../validators';
+import { unique } from '../validators/rules';
 
 const schema = new Schema<USER_INTERFACE>({
     username: {
